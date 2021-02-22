@@ -1,4 +1,4 @@
-mag_OB06284_kp_tdOpen_1.fits
+attach mag_OB06284_kp_tdOpen_1.fits
 phot
 
 
