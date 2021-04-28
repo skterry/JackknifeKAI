@@ -30,7 +30,7 @@ def jackknife():
         data.calcStrehl(jack_list, 'ks', instrument=nirc2)
         data.combine(jack_list, 'ks', '27maylgs', trim=1, weight='strehl',
                     submaps=3, instrument=nirc2, outSuffix='_' + str(i[0]))
-    os.chdir('../')
+        os.chdir('reduce')
 
 
     #---------------------------------------------------------------------------------
@@ -68,5 +68,5 @@ def jackknife():
         data.calcStrehl(jack_list, 'kp_tdOpen', field=target, instrument=osiris)
         data.combine(jack_list, 'kp_tdOpen', epoch, field=target,
                      trim=0, weight='strehl', submaps=3, instrument=osiris, outSuffix='_' + str(i[0]))
-    os.chdir('../')
+        os.chdir('reduce')
 
