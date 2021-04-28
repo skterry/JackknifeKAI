@@ -146,10 +146,7 @@ def go():
     # Kp-band reduction
     ##########
 
-    util.mkdir('ks')
-    os.chdir('ks')
-
-    target = 'OB110950'
+    target = 'OB06284'
     #-----OSIRIS------
     #sci_files = ['i200810_a004{0:03d}_flip'.format(ii) for ii in range(2, 6+1)]
     #sci_files += ['i200822_a012{0:03d}_flip'.format(ii) for ii in range(2, 25+1)] #Add second dataset (on same night). [Optional]
@@ -222,9 +219,6 @@ def jackknife():
     # Kp-band reduction
     ##########
 
-    util.mkdir('kp')
-    os.chdir('kp')
-
     target = 'OB06284'
     #sci_files = ['i200810_a004{0:03d}_flip'.format(ii) for ii in range(2, 26+1)] OG
     sci_files = ['i200810_a004{0:03d}_flip'.format(ii) for ii in range(2, 26+1)]
@@ -233,10 +227,11 @@ def jackknife():
     refSrc = [1071, 854] # This is the target
     # Alternative star to try (bright star to bottom of target): [1015, 581.9]
 
+    sky.makesky(sky_files, target, 'kp_tdOpen', instrument=osiris)
+
     for i in enumerate(sci_files, start=1):
         jack_list = sci_files[:]
         jack_list.remove(i[1])
-        sky.makesky(sky_files, target, 'kp_tdOpen', instrument=osiris)
         data.clean(jack_list, target, 'kp_tdOpen', refSrc, refSrc, field=target, instrument=osiris)
         data.calcStrehl(jack_list, 'kp_tdOpen', field=target, instrument=osiris)
         data.combine(jack_list, 'kp_tdOpen', epoch, field=target,
