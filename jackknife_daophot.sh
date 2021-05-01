@@ -1,6 +1,6 @@
-for i in {1..8}; do  # STEP 1
-head -19 input_daophot.txt >> input_daophot.txt
-sed -i -e "$((19*i)),$((19*(i+1)))s/mag_OB06284_kp_tdOpen_1/mag_OB06284_kp_tdOpen_$((i+1))/g" input_daophot.txt
+for i in {1..13}; do  # STEP 1
+head -16 input_daophot.txt >> input_daophot.txt
+sed -i -e "$((16*i)),$((16*(i+1)))s/mag27maylgs__1/mag27maylgs__$((i+1))/g" input_daophot.txt
 done
 
 #-----Comments-----#
@@ -13,11 +13,7 @@ done
 
 #daophot-mcmc < input_daophot.txt  # STEP 2
 
-#-----Comments-----#
-# since allstar doesn't continue, copy paste the following 2 lines  as many times as your combination images-1.
-#for i in {1..8}; do
-#sed -i -e "1,3s/magtest$i/magtest$((i+1))/g" input_allstar.txt
-#-------------------------#
-
-#allstar < input_allstar.txt # STEP 3
-#done 
+#for i in {1..13}; do  # STEP 3
+#sed -i -e "1,3s/mag27maylgs__$i/mag27maylgs__$((i+1))/g" input_allstar.txt
+#allstar < input_allstar.txt
+#done
