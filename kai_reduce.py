@@ -235,7 +235,7 @@ def jackknife():
         data.clean(jack_list, target, 'kp_tdOpen', refSrc, refSrc, field=target, instrument=osiris)
         data.calcStrehl(jack_list, 'kp_tdOpen', field=target, instrument=osiris)
         data.combine(jack_list, 'kp_tdOpen', epoch, field=target,
-                     trim=0, weight='strehl', submaps=3, instrument=osiris, outSuffix='_' + str(i[0]))
+                     trim=0, weight='strehl', submaps=3, instrument=osiris, outSuffix=str(i[0]))
         os.chdir('reduce')
 
 
