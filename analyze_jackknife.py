@@ -11,11 +11,13 @@ import pdb
 #id_star1 - int: DAOPHOT ID# for first star.
 #id_star2 - int: DAOPHOT ID# for second star.
 #jack_img_num - int: Total number of jackknife images to be processed (including 2nd best ref-image)
+#dt - int: time baseline (in years) between t0 and follow-up observation.
 
 #Generally, id_star1 is the brighter star but it's not strictly necessary.
-id_star1 = [372]
-id_star2 = [117]
+id_star1 = int(372)
+id_star2 = int(117)
 jack_img_num = int(14)
+dt = int(11.12)
 
 #-------------------------------------------------
 #-------------------------------------------------
@@ -38,4 +40,34 @@ for i in range(jack_img_num):
 jackknife_list = np.hstack((star1_list, star2_list))
 
 np.savetxt('jackknife_vals.dat', jackknife_list, fmt='%3s', header="id1, x1, y1, m1, me1, id2, x2, y2, m2, me2")
+
+#Calculate means and uncertainties for x,y,m via Equation 3 in Bhattacharya et al. 2021.
+jackknife_list = np.delete(jackknife_list, (3,7), axis=0) #remove outlier and/or alt. ref image data.
+jack_img_num = 12
+#print(jackknife_list)
+
+x1bar = np.mean(jackknife_list[:, 1])
+y1bar = np.mean(jackknife_list[:, 2])
+m1bar = np.mean(jackknife_list[:, 3])
+
+x2bar = np.mean(jackknife_list[:, 6])
+y2bar = np.mean(jackknife_list[:, 7])
+m2bar = np.mean(jackknife_list[:, 8])
+
+x1err = np.sqrt(((jack_img_num - 1)/(jack_img_num))*np.sum((jackknife_list[:,1] - x1bar)**2))
+y1err = np.sqrt(((jack_img_num - 1)/(jack_img_num))*np.sum((jackknife_list[:,2] - y1bar)**2))
+m1err = np.sqrt(((jack_img_num - 1)/(jack_img_num))*np.sum((jackknife_list[:,3] - m1bar)**2))
+
+x2err = np.sqrt(((jack_img_num - 1)/(jack_img_num))*np.sum((jackknife_list[:,6] - x2bar)**2))
+y2err = np.sqrt(((jack_img_num - 1)/(jack_img_num))*np.sum((jackknife_list[:,7] - y2bar)**2))
+m2err = np.sqrt(((jack_img_num - 1)/(jack_img_num))*np.sum((jackknife_list[:,8] - m2bar)**2))
+
+
+print("x1 =", x1bar, "+\-", x1err)
+print("y1 =", y1bar, "+\-", y1err)
+print("m1 =", m1bar, "+\-", m1err)
+print("------------------")
+print("x2 =", x2bar, "+\-", x2err)
+print("y2 =", y2bar, "+\-", y2err)
+print("m2 =", m2bar, "+\-", m2err)
 
