@@ -16,6 +16,7 @@ import pdb
 #Generally, id_star1 is the brighter star but it's not strictly necessary.
 id_star1 = int(372)
 id_star2 = int(117)
+id_star3 = [] #Optional 3rd(blend) star
 jack_img_num = int(14)
 dt = int(11.12)
 
@@ -26,6 +27,7 @@ dt = int(11.12)
 data_dict = {} #Dictionary that will hold each jackknife starlist
 star1_list = []
 star2_list = []
+star3_list = []
 jackknife_list = []
 
 for i in range(jack_img_num):
@@ -68,20 +70,42 @@ sep_X_err = np.sqrt((x1err)**2 + (x2err)**2)
 sep_Y = np.abs(y1bar - y2bar)
 sep_Y_err = np.sqrt((y1err)**2 + (y2err)**2)
 
-print("x1 =", x1bar, "+\-", x1err)
-print("y1 =", y1bar, "+\-", y1err)
-print("m1 =", m1bar, "+\-", m1err)
-print("-------------------------")
-print("x2 =", x2bar, "+\-", x2err)
-print("y2 =", y2bar, "+\-", y2err)
-print("m2 =", m2bar, "+\-", m2err)
-print("-------------------------")
-print("sep_X =", sep_X, "+\-", sep_X_err, "pix")
-print("sep_Y =", sep_Y, "+\-", sep_Y_err, "pix")
-print("-------------------------")
-print("mu_rel,HE =", (sep_X*9.942)/dt, "+\-", (sep_X_err*9.942)/dt, "mas/yr")
+#Print results
+print("x1 =", x1bar, "+-", x1err)
+print("y1 =", y1bar, "+-", y1err)
+print("m1 =", m1bar, "+-", m1err)
+print("#-------------------------")
+print("x2 =", x2bar, "+-", x2err)
+print("y2 =", y2bar, "+-", y2err)
+print("m2 =", m2bar, "+-", m2err)
+print("#-------------------------")
+print("sep_X =", sep_X, "+-", sep_X_err, "pix")
+print("sep_Y =", sep_Y, "+-", sep_Y_err, "pix")
+print("#-------------------------")
+print("mu_rel,HE =", (sep_X*9.942)/dt, "+-", (sep_X_err*9.942)/dt, "mas/yr")
 print("mu_rel,HN =", (sep_Y*9.942)/dt, (sep_Y_err*9.942)/dt, "mas/yr")
-print("mu_rel,H =", np.sqrt((sep_X)**2 + (sep_Y)**2)*9.942/dt, "+\-", np.sqrt((sep_X_err)**2 + (sep_Y_err)**2)*9.942/dt, "mas/yr")
+print("mu_rel,H =", np.sqrt((sep_X)**2 + (sep_Y)**2)*9.942/dt, "+-", np.sqrt((sep_X_err)**2 + (sep_Y_err)**2)*9.942/dt, "mas/yr")
+print("#-------------------------")
+print("m2 - m1 =", m2bar - m1bar, "+-", np.sqrt((m1err)**2 + (m2err)**2))
+
+#Propagate flux ratio errors (to-do: double check if propagation is correct! -ST)
+#--------------------------------
+exp_err = np.sqrt((0.4*m2err)**2 + (0.4*m1err)**2)
+ln_err = exp_err * np.log(10)
+f2f1_err = np.sqrt((0.4*m2err)**2 + (0.4*m1err)**2) * np.log(10) * (10**(-0.4*m2bar))/(((10**(-0.4*m1bar))))
+f1f2_err = np.sqrt((0.4*m1err)**2 + (0.4*m2err)**2) * np.log(10) * (10**(-0.4*m1bar))/(((10**(-0.4*m2bar))))
+
+f1tot_exp_err = np.sqrt((exp_err)**2 + (0.4*m1err)**2)
+f2tot_exp_err = np.sqrt((exp_err)**2 + (0.4*m2err)**2)
+
+f1tot_err = np.sqrt((exp_err)**2 + (0.4*m1err)**2) * np.log(10) * (10**(-0.4*m1bar))/((10**(-0.4*m1bar))+(10**(-0.4*m2bar)))
+f2tot_err = np.sqrt((exp_err)**2 + (0.4*m2err)**2) * np.log(10) * (10**(-0.4*m2bar))/((10**(-0.4*m1bar))+(10**(-0.4*m2bar)))
+#--------------------------------
+
+print("f2 / f1 =", (10**(-0.4*m2bar))/(((10**(-0.4*m1bar)))), "+-", f2f1_err)
+print("f1 / f2 =", (10**(-0.4*m1bar))/(((10**(-0.4*m2bar)))), "+-", f1f2_err)
+print("f1 / (f1+f2) =", (10**(-0.4*m1bar))/((10**(-0.4*m1bar))+(10**(-0.4*m2bar))), "+-", f1tot_err)
+print("f2 / (f1+f2) =", (10**(-0.4*m2bar))/((10**(-0.4*m1bar))+(10**(-0.4*m2bar))), "+-", f2tot_err)
 
 fig = plt.subplots(figsize=(8,8))
 
