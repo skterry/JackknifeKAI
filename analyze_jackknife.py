@@ -62,12 +62,38 @@ x2err = np.sqrt(((jack_img_num - 1)/(jack_img_num))*np.sum((jackknife_list[:,6] 
 y2err = np.sqrt(((jack_img_num - 1)/(jack_img_num))*np.sum((jackknife_list[:,7] - y2bar)**2))
 m2err = np.sqrt(((jack_img_num - 1)/(jack_img_num))*np.sum((jackknife_list[:,8] - m2bar)**2))
 
+sep_X = np.abs(x1bar - x2bar)
+sep_X_err = np.sqrt((x1err)**2 + (x2err)**2)
+
+sep_Y = np.abs(y1bar - y2bar)
+sep_Y_err = np.sqrt((y1err)**2 + (y2err)**2)
 
 print("x1 =", x1bar, "+\-", x1err)
 print("y1 =", y1bar, "+\-", y1err)
 print("m1 =", m1bar, "+\-", m1err)
-print("------------------")
+print("-------------------------")
 print("x2 =", x2bar, "+\-", x2err)
 print("y2 =", y2bar, "+\-", y2err)
 print("m2 =", m2bar, "+\-", m2err)
+print("-------------------------")
+print("sep_X =", sep_X, "+\-", sep_X_err, "pix")
+print("sep_Y =", sep_Y, "+\-", sep_Y_err, "pix")
+print("-------------------------")
+print("mu_rel,HE =", (sep_X*9.942)/dt, "+\-", (sep_X_err*9.942)/dt, "mas/yr")
+print("mu_rel,HN =", (sep_Y*9.942)/dt, (sep_Y_err*9.942)/dt, "mas/yr")
+print("mu_rel,H =", np.sqrt((sep_X)**2 + (sep_Y)**2)*9.942/dt, "+\-", np.sqrt((sep_X_err)**2 + (sep_Y_err)**2)*9.942/dt, "mas/yr")
+
+fig = plt.subplots(figsize=(8,8))
+
+plt.errorbar(x1bar,y1bar,xerr=x1err,yerr=y1err, color='r')
+plt.errorbar(x2bar,y2bar,xerr=x2err,yerr=y2err, color='b')
+
+plt.xlim(781,785)
+plt.ylim(427,432)
+
+plt.xlabel('X')
+plt.ylabel('Y')
+
+plt.show()
+
 
