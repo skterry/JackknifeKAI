@@ -51,9 +51,6 @@ def jackknife():
     # Kp-band reduction
     ##########
 
-    util.mkdir('kp')
-    os.chdir('kp')
-
     target = 'OB06284'
     sci_files = ['i200810_a004{0:03d}_flip'.format(ii) for ii in range(2, 26+1)]
     sky_files = ['i200810_a007{0:03d}_flip'.format(ii) for ii in range(2, 6+1)]
