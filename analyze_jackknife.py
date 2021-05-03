@@ -15,7 +15,7 @@ import pdb
 #Generally, id_star1 is the brighter star but it's not strictly necessary.
 id_star1 = [372]
 id_star2 = [117]
-jack_img_num = [14]
+jack_img_num = int(14)
 
 #-------------------------------------------------
 #-------------------------------------------------
