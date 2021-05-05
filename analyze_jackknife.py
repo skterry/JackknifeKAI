@@ -53,7 +53,7 @@ np.savetxt('jackknife_vals.dat', jackknife_list, fmt='%3s', header="id1, x1, y1,
 
 #Calculate means and uncertainties for x,y,m via Equation 3 in Bhattacharya et al. 2021.
 
-#jackknife_list = np.delete(jackknife_list, (3,7), axis=0) #remove outlier (optional).
+#jackknife_list = np.delete(jackknife_list, (3,7), axis=0) #remove outlier and/or alt. ref image data.
 #jack_img_num = 12
 #print(jackknife_list)
 
